@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title dir="ltr">Agile Planning Poker App (on github)</title>
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" media="screen" href="css/reset.css" >
+  <link rel="stylesheet" media="screen" href="css/poker.css" >
+  <link href='http://fonts.googleapis.com/css?family=Ribeye+Marrow' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <table width="100%" cellspacing="5">
+    <tr>
+      <td class="card"><a href="#"><p>?</p></a></td>
+      <td class="card"><a href="#"><p>&frac12;</p></a></td>
+      <td class="card"><a href="#"><p>1</p></a></td>
+    </tr>
+    <tr>
+      <td class="card"><a href="#"><p>2</p></a></td>
+      <td class="card"><a href="#"><p>3</p></a></td>
+      <td class="card"><a href="#"><p>5</p></a></td>
+    </tr>
+    <tr>
+      <td class="card"><a href="#"><p>8</p></a></td>
+      <td class="card"><a href="#"><p>13</p></a></td>
+      <td class="card"><a href="#"><p>20</p></a></td>
+    </tr>
+    <tr>
+      <td class="card"><a href="#"><p>40</p></a></td>
+      <td class="card"><a href="#"><p>100</p></a></td>
+      <td class="card"><a href="#"><p>&#8734;</p></a></td>
+    </tr>
+  </table>
+  <div style="display:none" class="card zoom"><a href="#"><p></p></a></div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>
+    $(function() { 
+
+      // VERTICALLY ALIGN FUNCTION
+      $.fn.vAlign = function() {
+        return this.each(function(i){
+          var ah = $(this).height();
+          var ph = $(this).parent().height();
+          var mh = Math.ceil((ph-ah) / 2);
+          $(this).css('margin-top', mh);
+        });
+      };
+    
+      var maxW = 600;
+      var size = function(){
+        var winW = document.body.clientWidth || window.innerWidth; 
+        document.body.style.fontSize = ( (winW/maxW)*100 ) + "%";
+        $('.card p').vAlign();
+      }
+  
+      window.onresize = size;
+      size();    
+      
+      $('.card.zoom').click(function(e) {
+        e.preventDefault();
+        $(this).hide();
+        $('.card:not(.zoom)').show();
+        size();
+      });
+    
+      $('.card:not(.zoom)').click(function(e) {
+        e.preventDefault();
+        var point = $(this).find('p').text();
+        $('.card:not(.zoom)').hide();
+        $('.zoom').show().find('p').html(point).vAlign();
+      });
+    });
+  </script>
+</body>
+</html>
